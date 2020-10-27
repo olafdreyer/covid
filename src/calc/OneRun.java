@@ -33,7 +33,7 @@ public class OneRun {
 		FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(1e-6);
 		HeightRadiusReached hrr = new HeightRadiusReached()
 				.withRMin(this.droplet.getRMin())
-				.withDroplet(this.droplet);
+				.withDroplet(this.droplet);  // sets the height
 		
 		integrator.addEventHandler(hrr, 1e-3, 0.1*droplet.getRMin(), 1000);
 

@@ -58,11 +58,19 @@ The organization of the source code (src folder) is as follows:
 * **tests** Tests for the different classes.
 
 ## Code execution
-The one class that contains a main() method is CalcWells. It is called with command line parameters that are explained in WellsParams. A typical call of CalcWells will contain these command line parameters:
+There are two classes that contain main() methods. CalcWells calculates the Wells curve and FindRM finds the value of r_M. CalcWells is called with command line parameters that are explained in WellsParams. A typical call of CalcWells will contain these command line parameters:
 
 ```
 -humidity 0.1 -startradius 100e-6 -endradius 200e-6 -stepsize 10e-6 -temperature 291.15 -height 1.7
 ```
+
+For FindRM only the humidity and the startradius are required:
+
+```
+-humidity 0.9 -startradius 100e-6 
+```
+
+(Note that FindRM is currently implemented with the CMS optimizer which makes it very slow.)
 
 There are also a number of unit tests that can be used to exexcute code.
 
