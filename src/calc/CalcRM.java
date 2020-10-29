@@ -1,13 +1,11 @@
 package calc;
 
-import org.apache.commons.math3.analysis.MultivariateFunction;
-import org.apache.commons.math3.optim.InitialGuess;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.optim.MaxEval;
-import org.apache.commons.math3.optim.SimpleBounds;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizer;
-import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.optim.univariate.BrentOptimizer;
+import org.apache.commons.math3.optim.univariate.SearchInterval;
+import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
 
 import helper.Droplet;
 import helper.GlobalProperties;
@@ -16,11 +14,13 @@ public class CalcRM {
 
 	private GlobalProperties gp;
 	private Droplet droplet;
+	private SearchInterval si;
 	private double rM;
 		
 	public CalcRM() {
 		 gp = new GlobalProperties();
 		 droplet = new Droplet();
+		 si = new SearchInterval(20e-6, 200e-6, 70e-6);
 		 rM = 0.0;
 	} // end empty constructor
 
@@ -32,23 +32,18 @@ public class CalcRM {
 	public void doCalc() {
 		
 		// define the function to be minimized
-		final MultivariateFunction fitnessFunction = new CalcTimes( gp, droplet );
+		final UnivariateFunction fitnessFunction = new CalcTimes( gp, droplet );
 
-		// define the optimizer
-	    final CMAESOptimizer optimizer = new CMAESOptimizer(2000, 0, true, 10, 0, new MersenneTwister(), false, null);
-	    	    	    
-	    final double[] lower = new double [] {droplet.getRMin()};
-	    final double[] upper = new double [] {droplet.getInitialRadius()*100.0}; // 
-	    final double[] sigma = new double [] {droplet.getRMin()*10.0};
+		// use the Brent optimizer
+		final UnivariateObjectiveFunction uof = new UnivariateObjectiveFunction(fitnessFunction);
+		
+		final MaxEval BRENT_MAX_EVAL = new MaxEval(1000);
+	    final double RELATIVE_TOLERANCE = 1e-8;
+	    final double ABSOLUTE_TOLERANCE = 1e-8;
+	    final BrentOptimizer optimizer = new BrentOptimizer(RELATIVE_TOLERANCE, ABSOLUTE_TOLERANCE);
 	    
-	    final double[] result = optimizer.optimize(new MaxEval(10000),
-	                                               new ObjectiveFunction(fitnessFunction),
-	                                               GoalType.MAXIMIZE,
-	                                               new CMAESOptimizer.PopulationSize(6), // 4 + 3*ln(n), could be lower for N=1
-	                                               new CMAESOptimizer.Sigma(sigma),
-	                                               new InitialGuess(new double [] {droplet.getInitialRadius()} ),
-	                                               new SimpleBounds(lower, upper)).getPoint();
-	    rM = result[0];
+	    this.rM = optimizer.optimize(uof, GoalType.MAXIMIZE, si, BRENT_MAX_EVAL).getPoint();
+		
 	} // end doCalc 
 	
 	public GlobalProperties getGlobalProperties() {
@@ -79,6 +74,15 @@ public class CalcRM {
 	
 	public double getRM() {
 		return rM;
+	}
+
+	public void setInterval(SearchInterval si) {
+		this.si = si;
+	}
+	
+	public CalcRM withInterval(SearchInterval si) {
+		this.si = si;
+		return this;
 	}
 	
 	

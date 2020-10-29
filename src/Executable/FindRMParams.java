@@ -21,6 +21,12 @@ public class FindRMParams {
 	@Parameter(names = { "-startradius" }, description = "The radius to start the calculation.", required = true )
 	private Double r_start=10.0e-6;
 	
+	@Parameter(names = { "-endradius" }, description = "The radius to end the calculation.", required = true )
+	private Double r_end=150.0e-6;
+	
+	@Parameter(names = { "-guess" }, description = "The initial guess fro r_M.", required = true )
+	private Double r_guess=70.0e-6;
+	
 	@Parameter(names = { "-height" }, description = "The height of the drop.", required = false )
 	private Double height=2.0;
 
@@ -73,6 +79,22 @@ public class FindRMParams {
 
 	public void setPressure(Double pressure) {
 		this.pressure = pressure;
+	}
+
+	public Double getR_end() {
+		return r_end;
+	}
+
+	public void setR_end(Double r_end) {
+		this.r_end = r_end;
+	}
+
+	public Double getR_guess() {
+		return r_guess;
+	}
+
+	public void setR_guess(Double r_guess) {
+		this.r_guess = r_guess;
 	}
 	
 } // end class

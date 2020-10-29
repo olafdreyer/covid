@@ -2,6 +2,8 @@ package Executable;
 
 import java.util.Locale;
 
+import org.apache.commons.math3.optim.univariate.SearchInterval;
+
 import com.beust.jcommander.JCommander;
 
 import calc.CalcRM;
@@ -31,10 +33,13 @@ public class FindRM {
 
 		Droplet d = new Droplet()
 				.withHeight(params.getHeight())
-				.withInitialRadius(rStart);
+				.withInitialRadius(params.getR_guess());
+		
+		final SearchInterval searchInterval = new SearchInterval(params.getR_start(), params.getR_end(), params.getR_guess()); 
 		
 		crm.setGlobalProperties(gp);
 		crm.setDroplet(d);
+		crm.setInterval(searchInterval);
 		
 		crm.calc();
 		
