@@ -64,13 +64,13 @@ There are two classes that contain main() methods. CalcWells calculates the Well
 -humidity 0.1 -startradius 100e-6 -endradius 200e-6 -stepsize 10e-6 -temperature 291.15 -height 1.7
 ```
 
-For FindRM only the humidity and the startradius are required:
+For FindRM the humidity, the startradius, the endradius, and a guess are required:
 
 ```
--humidity 0.9 -startradius 100e-6 
+-humidity 0.85 -startradius 30e-6 -endradius 100e-6 -guess 40e-6
 ```
 
-(Note that FindRM is currently implemented with the CMS optimizer which makes it very slow.)
+The startradius and the endradius define an interval that the optimum is found in. guess is the initial guess.
 
 There are also a number of unit tests that can be used to exexcute code.
 
