@@ -3,11 +3,12 @@ package calc;
 import java.util.Locale;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 
 import helper.Droplet;
 import helper.GlobalProperties;
 
-public class CalcTimes implements MultivariateFunction {
+public class CalcTimes implements UnivariateFunction {
 
 	private OneRun or;
 
@@ -16,10 +17,10 @@ public class CalcTimes implements MultivariateFunction {
 	} // end CalcTimes
 	
 	@Override
-	public double value(double[] point) {
-		or.getDroplet().setInitialRadius(point[0]);
+	public double value(double point) {
+		or.getDroplet().setInitialRadius(point);
 		or.calc();
-		System.out.format(Locale.US, "%10.9f\n", point[0] );
+		System.out.format(Locale.US, "%10.9f\n", point );
 		return or.getResult().getTime(); // remember: need to maximize
 	} // end value
 

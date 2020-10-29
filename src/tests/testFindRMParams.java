@@ -16,7 +16,7 @@ class testFindRMParams {
 	@Test
 	void test() {
 		
-		String args [] = new String [] {"-humidity", "0.45", "-startradius", "10e-6", };
+		String args [] = new String [] {"-humidity", "0.45", "-startradius", "10e-6", "-endradius", "100e-6","-guess", "75e-6" };
 		
 		// parse the command line
 		JCommander.newBuilder()
@@ -26,11 +26,13 @@ class testFindRMParams {
 
 		assertEquals(0.45, params.getHumidity(), 1e-7);
 		assertEquals(10e-6, params.getR_start(), 1e-7);
+		assertEquals(100e-6, params.getR_end(), 1e-7);
+		assertEquals(75e-6, params.getR_guess(), 1e-7);
 		assertEquals(291.15, params.getTemperature(), 1e-7);
 		assertEquals(101325, params.getPressure(), 1e-7);
 		assertEquals(2.0, params.getHeight(), 1e-7);
 
-		args = new String [] {"-humidity", "0.98", "-startradius", "55e-6", "-temperature", "265.0", "-height", "1.75", "-pressure", "120004.0" };
+		args = new String [] {"-humidity", "0.98", "-startradius", "55e-6", "-endradius", "123e-6","-guess", "65.34e-6", "-temperature", "265.0", "-height", "1.75", "-pressure", "120004.0" };
 		
 		// parse the command line
 		JCommander.newBuilder()
@@ -40,6 +42,8 @@ class testFindRMParams {
 
 		assertEquals(0.98, params.getHumidity(), 1e-7);
 		assertEquals(55e-6, params.getR_start(), 1e-7);
+		assertEquals(123e-6, params.getR_end(), 1e-7);
+		assertEquals(65.34e-6, params.getR_guess(), 1e-7);
 		assertEquals(265.0, params.getTemperature(), 1e-7);
 		assertEquals(120004.0, params.getPressure(), 1e-7);
 		assertEquals(1.75, params.getHeight(), 1e-7);
